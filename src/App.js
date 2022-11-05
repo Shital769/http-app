@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { ToastContainer } from "react-toastify";
 import config from "./config.json";
+import "react-toastify/dist/ReactToastify.css";
 import http from "./services/httpService";
 import "./App.css";
 
-const apiEndpoint = "";
 class App extends Component {
   state = {
     posts: [],
@@ -40,10 +41,10 @@ class App extends Component {
     this.setState({ posts });
     try {
       //for expected error
-      await http.delete(apiEndpoint + "/999" + post.id);
+      await http.delete( "s" + config.apiEndpoint + "/" + post.id);
       //for unexpected error
       //await axios.delete("s" + apiEndpoint + "/" + post.id);
-      throw new Error("");
+      // throw new Error("");
     } catch (exception) {
       //Expected Errors (404: not found, 400: bad request) - CLIENT Errors
       // -Display a specific error message
@@ -51,7 +52,7 @@ class App extends Component {
       // -Log them
       // -Display a generic and friendly error message
 
-      if (exception.response && exception.response.status === 400);
+      if (exception.response && exception.response.status === 404);
       alert("This post has already been deleted");
       this.setState({ posts: originalPosts });
     }
@@ -60,6 +61,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        < ToastContainer />
         <button className="btn btn-primary" onClick={this.handleAdd}>
           Add
         </button>
