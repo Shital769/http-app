@@ -1,21 +1,22 @@
 import React, { Component } from "react";
+import config from "./config.json";
 import http from "./services/httpService";
 import "./App.css";
 
-const apiEndpoint = "https://jsonplaceholder.typicode.com/posts";
+const apiEndpoint = "";
 class App extends Component {
   state = {
     posts: [],
   };
   async componentDidMount() {
     //promise method will do promise > resolved (succes) OR rejected (failure)
-    const { data: posts } = await http.get(apiEndpoint);
+    const { data: posts } = await http.get(config.apiEndpoint);
     this.setState({ posts });
   }
 
   handleAdd = async () => {
     const obj = { title: "a", body: "b" };
-    const { data: post } = await http.post(apiEndpoint, obj);
+    const { data: post } = await http.post(config.apiEndpoint, obj);
 
     const posts = [post, ...this.state.posts];
     this.setState({ posts });
@@ -23,7 +24,7 @@ class App extends Component {
 
   handleUpdate = async (post) => {
     post.title = "UPDATED";
-    await http.put(apiEndpoint + "/" + post.id, post);
+    await http.put(config.apiEndpoint + "/" + post.id, post);
     //put method to update all properties
     // patch method to update one or more properties
     const posts = [...this.state.posts];
